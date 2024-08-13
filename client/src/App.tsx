@@ -7,28 +7,32 @@ import Checkout from "./components/pages/Checkout";
 import Footer from "./components/Footer";
 import PropertyList from "./components/PropertyList";
 import Cart from "./components/Cart";
+import { CartProvider } from "./components/context/CartContext";
 
 const App = () => {
   return (
     <ChakraProvider>
-      <Router>
-        <Flex direction="column" minHeight="100vh">
-          <Header />
-          <Box flex="1" p={4}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/properties" element={<PropertyList />} />
-              <Route path="/properties/:id" element={<PropertyDetails />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              {/* <Route path="/login" element={<Login />} />
+      <CartProvider>
+        <Router>
+          <Flex direction="column" minHeight="100vh">
+            <Header />
+            <Box flex="1" p={4}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/properties" element={<PropertyList />} />
+                <Route path="/properties/:id" element={<PropertyDetails />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/checkout" element={<Checkout />} />
+                {/* <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} /> */}
-              {/* Add more routes as needed */}
-            </Routes>
-          </Box>
-          <Footer />
-        </Flex>
-      </Router>
+                {/* Add more routes as needed */}
+              </Routes>
+            </Box>
+            <Footer />
+          </Flex>
+        </Router>
+      </CartProvider>
     </ChakraProvider>
   );
 };

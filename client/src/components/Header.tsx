@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Flex,
@@ -6,29 +7,19 @@ import {
   IconButton,
   useDisclosure,
   Stack,
+  Badge,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link as RouterLink } from "react-router-dom";
-import { FiHome, FiMapPin, FiShoppingCart } from "react-icons/fi"; // Import icons
+import { useCart } from "./context/CartContext"; // Import the useCart hook
+import { FaShoppingCart } from "react-icons/fa";
 
-// Updated Links array with objects for paths and labels
-const Links = [
-  { label: "Home", path: "/", icon: FiHome },
-  { label: "Properties", path: "/properties", icon: FiMapPin },
-];
+const Links = ["Home", "Properties"];
 
-const NavLink = ({
-  path,
-  icon: Icon,
-  label,
-}: {
-  path: string;
-  icon: any;
-  label: string;
-}) => (
+const NavLink = ({ children }: { children: React.ReactNode }) => (
   <Link
     as={RouterLink}
-    to={path}
+    to={`/${children?.toString().toLowerCase()}`}
     px={2}
     py={1}
     rounded={"md"}
@@ -36,15 +27,16 @@ const NavLink = ({
       textDecoration: "none",
       bg: "gray.200",
     }}
-    className="text-lg font-medium flex items-center"
+    className="text-lg font-medium"
   >
-    <Icon className="mr-2" />
-    {label}
+    {children}
   </Link>
 );
 
 const Header = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { cartItems } = useCart(); // Use the cart context
+  const cartCount = cartItems.length; // Get the number of items in the cart
 
   return (
     <Box bg="teal.500" px={4} className="shadow-md">
@@ -65,29 +57,34 @@ const Header = () => {
         {/* Desktop Navigation */}
         <HStack as="nav" spacing={4} display={{ base: "none", md: "flex" }}>
           {Links.map((link) => (
-            <NavLink
-              key={link.label}
-              path={link.path}
-              icon={link.icon}
-              label={link.label}
-            />
+            <NavLink key={link}>{link}</NavLink>
           ))}
-          {/* Cart Link with Icon */}
-          <Link
-            as={RouterLink}
-            to="/cart"
-            px={2}
-            py={1}
-            rounded={"md"}
-            _hover={{
-              textDecoration: "none",
-              bg: "gray.200",
-            }}
-            className="text-lg font-medium flex items-center"
-          >
-            <FiShoppingCart className="mr-2" />
-            Cart
-          </Link>
+          {/* Cart Icon with Badge */}
+          <Box position="relative">
+            <IconButton
+              as={RouterLink}
+              to="/cart"
+              icon={<FaShoppingCart />}
+              aria-label="Cart"
+              variant="ghost"
+              size="md"
+              color="white"
+            />
+            {cartCount > 0 && (
+              <Badge
+                position="absolute"
+                top="-1"
+                right="-1"
+                borderRadius="full"
+                bg="red.500"
+                color="white"
+                fontSize="0.8em"
+                p="2px 4px"
+              >
+                {cartCount}
+              </Badge>
+            )}
+          </Box>
         </HStack>
 
         {/* Mobile Navigation Button */}
@@ -106,29 +103,10 @@ const Header = () => {
         <Box pb={4} display={{ md: "none" }}>
           <Stack as="nav" spacing={4}>
             {Links.map((link) => (
-              <NavLink
-                key={link.label}
-                path={link.path}
-                icon={link.icon}
-                label={link.label}
-              />
+              <NavLink key={link}>{link}</NavLink>
             ))}
-            {/* Cart Link with Icon for Mobile */}
-            <Link
-              as={RouterLink}
-              to="/cart"
-              px={2}
-              py={1}
-              rounded={"md"}
-              _hover={{
-                textDecoration: "none",
-                bg: "gray.200",
-              }}
-              className="text-lg font-medium flex items-center"
-            >
-              <FiShoppingCart className="mr-2" />
-              Cart
-            </Link>
+            {/* Cart Link for Mobile */}
+            <NavLink>Cart</NavLink>
           </Stack>
         </Box>
       ) : null}
