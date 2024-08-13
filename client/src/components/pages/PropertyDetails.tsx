@@ -9,7 +9,7 @@ import {
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
-// import { useCart } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 
 interface Property {
   id: string;
@@ -85,7 +85,7 @@ const mockProperties: Property[] = [
 const PropertyDetails = () => {
   const { id } = useParams<{ id: string }>();
   const property = mockProperties.find((p) => p.id === id);
-  // const { addToCart } = useCart();
+  const { addToCart } = useCart();
 
   if (!property) {
     return (
@@ -95,15 +95,16 @@ const PropertyDetails = () => {
     );
   }
 
-  // const handleAddToCart = () => {
-  //   addToCart({
-  //     id: property.id,
-  //     title: property.title,
-  //     image: property.image,
-  //     price: property.price,
-  //     quantity: 1,
-  //   });
-  // };
+  const handleAddToCart = (property: Property) => {
+    addToCart({
+      id: property.id,
+      title: property.title,
+      description: property.description,
+      image: property.image,
+      price: property.price,
+      quantity: 1,
+    });
+  };
 
   return (
     <Box py={16} bg={useColorModeValue("gray.50", "gray.800")}>
@@ -123,7 +124,9 @@ const PropertyDetails = () => {
           <Text fontSize="lg" fontWeight="bold">
             Price: ${property.price.toLocaleString()}
           </Text>
-          <Button colorScheme="teal">Add to Cart</Button>
+          <Button colorScheme="teal" onClick={() => handleAddToCart(property)}>
+            Add to Cart
+          </Button>
         </Stack>
       </Container>
     </Box>

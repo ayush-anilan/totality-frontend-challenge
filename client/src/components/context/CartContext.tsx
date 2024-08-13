@@ -8,6 +8,8 @@ interface CartItem {
   image: string;
   price: number;
   quantity: number;
+  checkInDate?: string;
+  checkOutDate?: string;
 }
 
 // Define the actions for the reducer
@@ -15,7 +17,9 @@ type CartAction =
   | { type: "ADD_ITEM"; item: CartItem }
   | { type: "REMOVE_ITEM"; id: string }
   | { type: "INCREMENT_QUANTITY"; id: string }
-  | { type: "DECREMENT_QUANTITY"; id: string };
+  | { type: "DECREMENT_QUANTITY"; id: string }
+  | { type: "UPDATE_QUANTITY"; id: string; quantity: number }
+  | { type: "CLEAR_CART" };
 
 // Define the initial state for the reducer
 const initialState: CartItem[] = [];
@@ -46,6 +50,12 @@ function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
           ? { ...item, quantity: item.quantity - 1 }
           : item
       );
+    case "UPDATE_QUANTITY":
+      return state.map((item) =>
+        item.id === action.id ? { ...item, quantity: action.quantity } : item
+      );
+    case "CLEAR_CART":
+      return [];
     default:
       return state;
   }
@@ -55,10 +65,18 @@ function cartReducer(state: CartItem[], action: CartAction): CartItem[] {
 const CartContext = createContext<{
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  clearCart: () => void;
+  cartTotal: number;
+  bookingCount: number;
   dispatch: React.Dispatch<CartAction>;
 }>({
   cartItems: initialState,
   addToCart: () => null,
+  updateQuantity: () => null,
+  clearCart: () => null,
+  cartTotal: 0,
+  bookingCount: 0,
   dispatch: () => null,
 });
 
@@ -68,10 +86,39 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const addToCart = (item: CartItem) => {
     dispatch({ type: "ADD_ITEM", item });
+    alert("Property added to cart successfully");
   };
 
+  const updateQuantity = (id: string, quantity: number) => {
+    dispatch({ type: "UPDATE_QUANTITY", id, quantity });
+  };
+
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" });
+  };
+
+  const cartTotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  const bookingCount = cartItems.reduce(
+    (count, item) => count + item.quantity,
+    0
+  );
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, dispatch }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        updateQuantity,
+        clearCart,
+        cartTotal,
+        bookingCount,
+        dispatch,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

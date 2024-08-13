@@ -7,6 +7,7 @@ import {
   Heading,
   Flex,
 } from "@chakra-ui/react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { useCart } from "./context/CartContext";
 
 const Cart = () => {
@@ -53,6 +54,8 @@ const Cart = () => {
                 <Text>{item.description}</Text>
                 <Text>Price: ${item.price.toLocaleString()}</Text>
                 <Text>Quantity: {item.quantity}</Text>
+                <Text>Check-In Date: {item.checkInDate}</Text>
+                <Text>Check-Out Date: {item.checkOutDate}</Text>
               </Box>
               <Stack direction="row" spacing={2}>
                 <Button size="sm" onClick={() => handleDecrement(item.id)}>
@@ -72,6 +75,13 @@ const Cart = () => {
             </Flex>
           ))}
           <Text fontWeight="bold">Total: ${totalCost.toLocaleString()}</Text>
+          <Box>
+            <Link to="/checkout">
+              <Button colorScheme="teal" mt={4}>
+                Proceed to Checkout
+              </Button>
+            </Link>
+          </Box>
         </Stack>
       )}
     </Box>
