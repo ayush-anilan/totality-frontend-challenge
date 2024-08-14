@@ -23,6 +23,7 @@ interface Property {
   price: number;
   location: string;
   amenities: string[];
+  bedrooms: number;
 }
 
 // Mock data
@@ -36,6 +37,7 @@ const mockProperties: Property[] = [
     price: 1200,
     location: "Downtown",
     amenities: ["Wi-Fi", "Air Conditioning", "Washer"],
+    bedrooms: 2,
   },
   {
     id: "2",
@@ -46,6 +48,7 @@ const mockProperties: Property[] = [
     price: 2500,
     location: "Suburbs",
     amenities: ["Garage", "Pool", "Garden"],
+    bedrooms: 3,
   },
   {
     id: "3",
@@ -57,6 +60,7 @@ const mockProperties: Property[] = [
     price: 3500,
     location: "Beachfront",
     amenities: ["Ocean View", "Gym", "Concierge"],
+    bedrooms: 4,
   },
   {
     id: "4",
@@ -67,6 +71,7 @@ const mockProperties: Property[] = [
     price: 800,
     location: "Uptown",
     amenities: ["Balcony", "Compact Kitchen", "Pet Friendly"],
+    bedrooms: 2,
   },
   {
     id: "5",
@@ -78,6 +83,7 @@ const mockProperties: Property[] = [
     price: 1800,
     location: "Downtown Historic District",
     amenities: ["Fireplace", "Library", "Original Woodwork"],
+    bedrooms: 3,
   },
   {
     id: "6",
@@ -89,6 +95,7 @@ const mockProperties: Property[] = [
     price: 3000,
     location: "Suburban Area",
     amenities: ["Large Backyard", "Playroom", "Home Office"],
+    bedrooms: 4,
   },
 ];
 
@@ -136,6 +143,9 @@ const PropertyDetails = () => {
             {property.title}
           </Heading>
           <Text fontSize="lg">{property.description}</Text>
+          <Text className="font-semibold">
+            Number of Bedrooms: {property.bedrooms}
+          </Text>
           <Text fontSize="lg" fontWeight="bold">
             Price: ${property.price.toLocaleString()}
           </Text>

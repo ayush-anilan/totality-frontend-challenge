@@ -34,6 +34,7 @@ interface Property {
   price: number;
   location: string;
   amenities: string[];
+  bedrooms: number;
 }
 
 const mockProperties: Property[] = [
@@ -46,6 +47,7 @@ const mockProperties: Property[] = [
     price: 1200,
     location: "Downtown",
     amenities: ["Wi-Fi", "Air Conditioning", "Washer"],
+    bedrooms: 2,
   },
   {
     id: "2",
@@ -55,7 +57,8 @@ const mockProperties: Property[] = [
       "https://media.istockphoto.com/id/1263902259/photo/beautiful-modern-home-with-various-materials-used-on-the-facade.jpg?s=612x612&w=0&k=20&c=6Ljh4zY-7z_m4o-sr4Zf9su0OuNkJDEXdu-Ckw-ZgEY=",
     price: 2500,
     location: "Suburbs",
-    amenities: ["Garage", "Pool", "Garden", "Wi-Fi"],
+    amenities: ["Garage", "Pool", "Garden"],
+    bedrooms: 3,
   },
   {
     id: "3",
@@ -67,6 +70,7 @@ const mockProperties: Property[] = [
     price: 3500,
     location: "Beachfront",
     amenities: ["Ocean View", "Gym", "Concierge"],
+    bedrooms: 4,
   },
   {
     id: "4",
@@ -76,7 +80,8 @@ const mockProperties: Property[] = [
       "https://cf.bstatic.com/xdata/images/hotel/max1024x768/438714935.jpg?k=6a4d8f096fee6cc8d039c3bb5a5da60f766417032e514909a1b7931170c48319&o=&hp=1",
     price: 800,
     location: "Uptown",
-    amenities: ["Balcony", "Compact Kitchen", "Pet Friendly", "Wi-Fi"],
+    amenities: ["Balcony", "Compact Kitchen", "Pet Friendly"],
+    bedrooms: 2,
   },
   {
     id: "5",
@@ -88,6 +93,7 @@ const mockProperties: Property[] = [
     price: 1800,
     location: "Downtown Historic District",
     amenities: ["Fireplace", "Library", "Original Woodwork"],
+    bedrooms: 3,
   },
   {
     id: "6",
@@ -99,10 +105,10 @@ const mockProperties: Property[] = [
     price: 3000,
     location: "Suburban Area",
     amenities: ["Large Backyard", "Playroom", "Home Office"],
+    bedrooms: 4,
   },
 ];
 
-// Sample data for locations and amenities
 const locations = [
   "Downtown",
   "Suburbs",
@@ -142,6 +148,7 @@ const PropertyList = () => {
   const [locationFilter, setLocationFilter] = useState("");
   const [priceRange, setPriceRange] = useState([0, 5000]); // Example range
   const [amenitiesFilter, setAmenitiesFilter] = useState<string[]>([]);
+  const [bedroomFilter, setBedroomFilter] = useState<number | "">(""); // Updated default state to ""
 
   const handleBookNow = (property: Property) => {
     setSelectedProperty(property);
@@ -173,8 +180,10 @@ const PropertyList = () => {
     const amenitiesMatch =
       amenitiesFilter.length === 0 ||
       amenitiesFilter.every((amenity) => property.amenities.includes(amenity));
+    const bedroomsMatch =
+      bedroomFilter === "" || property.bedrooms === Number(bedroomFilter);
 
-    return locationMatch && priceMatch && amenitiesMatch;
+    return locationMatch && priceMatch && amenitiesMatch && bedroomsMatch;
   });
 
   const handleAmenitiesChange = (amenity: string) => {
@@ -183,6 +192,11 @@ const PropertyList = () => {
         ? prevFilters.filter((filter) => filter !== amenity)
         : [...prevFilters, amenity]
     );
+  };
+
+  const handleBedroomFilterChange = (value: string) => {
+    // Cast the string to number if not empty
+    setBedroomFilter(value === "" ? "" : Number(value));
   };
 
   return (
@@ -232,7 +246,7 @@ const PropertyList = () => {
             </FormControl>
           </Box>
 
-          <FormControl>
+          <FormControl mb={4}>
             <FormLabel>Amenities</FormLabel>
             <HStack spacing={4} wrap="wrap">
               {amenitiesList.map((amenity) => (
@@ -246,6 +260,24 @@ const PropertyList = () => {
               ))}
             </HStack>
           </FormControl>
+
+          <Box mb={4}>
+            <FormControl>
+              <FormLabel>Number of Bedrooms:</FormLabel>
+              <Select
+                placeholder="Select Number of Bedrooms"
+                onChange={(e) => handleBedroomFilterChange(e.target.value)}
+                mb={4}
+              >
+                <option value="">Any</option>
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
         </Box>
 
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>

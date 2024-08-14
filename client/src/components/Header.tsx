@@ -68,7 +68,7 @@ const Header = () => {
               aria-label="Cart"
               variant="ghost"
               size="md"
-              color="white"
+              color="GrayText"
             />
             {cartCount > 0 && (
               <Badge
