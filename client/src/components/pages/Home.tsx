@@ -61,12 +61,14 @@ const Home = () => {
       <Box py={16} bg={useColorModeValue("white", "gray.800")}>
         <Container maxW={"6xl"}>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-            <Box className="text-center">
+            <Box className="text-center feature-box">
               <Image
-                src="https://via.placeholder.com/100"
-                alt="Feature 1"
-                mb={4}
-                className="mx-auto"
+                src="https://wp-assets.stessa.com/wp-content/uploads/2022/05/05084855/suburb-street-e1651765745609.jpg"
+                alt="Wide Range of Properties"
+                width={300}
+                height={200}
+                className="mx-auto rounded-lg shadow-lg"
+                mb={2}
               />
               <Heading size="md" mb={2}>
                 Wide Range of Properties
@@ -76,12 +78,15 @@ const Home = () => {
                 different locations.
               </Text>
             </Box>
-            <Box className="text-center">
+
+            <Box className="text-center feature-box">
               <Image
-                src="https://via.placeholder.com/100"
-                alt="Feature 2"
-                mb={4}
-                className="mx-auto"
+                src="https://img.freepik.com/premium-vector/secure-payment-credit-card-icon-with-shield-secure-transaction-vector-stock-illustration_100456-11325.jpg"
+                alt="Easy and Secure Payment"
+                width={300}
+                height={200}
+                className="mx-auto rounded-lg shadow-lg"
+                mb={2}
               />
               <Heading size="md" mb={2}>
                 Easy and Secure Payment
@@ -90,12 +95,15 @@ const Home = () => {
                 Make transactions seamlessly with our secure payment gateway.
               </Text>
             </Box>
-            <Box className="text-center">
+
+            <Box className="text-center feature-box">
               <Image
-                src="https://via.placeholder.com/100?text=Support"
-                alt="Feature 3"
-                mb={4}
-                className="mx-auto"
+                src="https://betinasia.zendesk.com/hc/article_attachments/17026876774418"
+                alt="24/7 Customer Support"
+                width={300}
+                height={200}
+                className="mx-auto rounded-lg shadow-lg"
+                mb={2}
               />
               <Heading size="md" mb={2}>
                 24/7 Customer Support
@@ -122,7 +130,7 @@ const Home = () => {
           </Heading>
           <Button
             as={RouterLink}
-            to="/register"
+            to="/properties"
             size="lg"
             colorScheme="teal"
             variant="outline"
